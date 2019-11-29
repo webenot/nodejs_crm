@@ -1,22 +1,38 @@
 <main class="content">
   <div class="page-title">
     <h4>Категории</h4>
-    <button class="waves-effect waves-light btn grey darken-1">Добавить категорию</button>
+    <button
+      class="waves-effect waves-light btn grey darken-1"
+      routerLink="/categories/new"
+    >
+      Добавить категорию
+    </button>
   </div>
 
-  <div class="row">
+  <div
+    class="row"
+    *ngIf="categories$ | async as categories; else loader"
+  >
     <div class="col s12">
-      <div class="collection">
-        <a href="#" class="collection-item">Категория 1</a>
-        <a href="#" class="collection-item">Категория 1</a>
-        <a href="#" class="collection-item">Категория 1</a>
-        <a href="#" class="collection-item">Категория 1</a>
-        <a href="#" class="collection-item">Категория 1</a>
-        <a href="#" class="collection-item active">Категория 2</a>
-        <a href="#" class="collection-item">Категория 1</a>
-        <a href="#" class="collection-item">Категория 1</a>
+      <div class="collection" *ngIf="categories.length; else empty">
+        <a
+          *ngFor="let category of categories"
+          [routerLink]="['/categories', category._id]"
+          class="collection-item active"
+        >
+          {{category.name}}
+        </a>
       </div>
     </div>
   </div>
 
+  <ng-template #loader>
+    <app-loader></app-loader>
+  </ng-template>
+
+  <ng-template #empty>
+    <div class="center">
+      У вас нет ни одной категории
+    </div>
+  </ng-template>
 </main>

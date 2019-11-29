@@ -69,15 +69,9 @@ module.exports.patch = async (request, response) => {
       updated.imageSrc = request.file.path.replace(/\\/g, '/');
     }
     const category = await Category.findOneAndUpdate(
-      {
-        _id: request.params.id,
-      },
-      {
-        $set: updated,
-      },
-      {
-        new: true,
-      });
+      { _id: request.params.id, },
+      { $set: updated, },
+      { new: true });
     response.status(200).json(category);
   } catch (error) {
     errorHandler(response, error);
