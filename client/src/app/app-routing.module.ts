@@ -32,8 +32,8 @@ const routes: Routes = [
       { path: 'analytics', component: AnalyticsPageComponent },
       { path: 'order', component: OrderPageComponent },
       { path: 'categories', component: CategoriesPageComponent },
-      { path: 'categories/:id', component: CategoriesFormComponent },
       { path: 'categories/new', component: CategoriesFormComponent },
+      { path: 'categories/:id', component: CategoriesFormComponent },
     ]
   }
 ];

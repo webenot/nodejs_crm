@@ -48,7 +48,17 @@ module.exports.delete = async (request, response) => {
 
 module.exports.create = async (request, response) => {
   try {
-    const category = await new Category({
+    let category = await Category.findOne({
+      name: request.body.name,
+      user: request.user.id,
+    });
+    if (category) {
+      response.status(409).json({
+        message: 'Category with this name is already exists'
+      });
+    }
+
+    category = await new Category({
       name: request.body.name,
       user: request.user.id,
       imageSrc: request.file ? request.file.path.replace(/\\/g, '/') : '',

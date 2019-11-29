@@ -18,7 +18,8 @@
         <a
           *ngFor="let category of categories"
           [routerLink]="['/categories', category._id]"
-          class="collection-item active"
+          class="collection-item"
+          routerLinkActive="active"
         >
           {{category.name}}
         </a>
