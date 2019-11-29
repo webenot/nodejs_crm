@@ -7,6 +7,9 @@ import { SiteLayoutComponent } from './shared/layouts/site-layout/site-layout.co
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { AuthGuard } from './shared/classes/auth.guard';
 import { OverviewPageComponent } from './overview-page/overview-page.component';
+import { AnalyticsPageComponent } from './analytics-page/analytics-page.component';
+import { OrderPageComponent } from './order-page/order-page.component';
+import { CategoriesPageComponent } from './categories-page/categories-page.component';
 
 
 const routes: Routes = [
@@ -14,19 +17,9 @@ const routes: Routes = [
     path: '',
     component: AuthLayoutComponent,
     children: [
-      {
-        path: '',
-        redirectTo: '/login',
-        pathMatch: 'full'
-      },
-      {
-        path: 'login',
-        component: LoginPageComponent
-      },
-      {
-        path: 'register',
-        component: RegisterPageComponent
-      }
+      { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: 'login', component: LoginPageComponent },
+      { path: 'register', component: RegisterPageComponent }
     ]
   },
   {
@@ -34,10 +27,10 @@ const routes: Routes = [
     component: SiteLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      {
-        path: 'overview',
-        component: OverviewPageComponent
-      }
+      { path: 'overview', component: OverviewPageComponent },
+      { path: 'analytics', component: AnalyticsPageComponent },
+      { path: 'order', component: OrderPageComponent },
+      { path: 'categories', component: CategoriesPageComponent }
     ]
   }
 ];

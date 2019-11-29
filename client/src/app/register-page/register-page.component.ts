@@ -21,20 +21,10 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = new FormGroup({
-      email: new FormControl(
-        null,
-        [
-          Validators.required,
-          Validators.email
-        ]
-      ),
-      password: new FormControl(
-        null,
-        [
-          Validators.required,
-          Validators.minLength(6)
-        ]
-      )
+      email: new FormControl(null,
+        [ Validators.required, Validators.email ] ),
+      password: new FormControl(null,
+        [ Validators.required, Validators.minLength(6) ])
     });
   }
 
@@ -50,9 +40,7 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
     this.aSub = this.auth.register(this.form.value).subscribe(
       () => {
         this.router.navigate(['/login'], {
-          queryParams: {
-            registered: true,
-          }
+          queryParams: { registered: true, }
         });
       },
       error => {
