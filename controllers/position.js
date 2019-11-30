@@ -36,7 +36,18 @@ module.exports.getById = async (request, response) => {
 
 module.exports.create = async (request, response) => {
   try {
-    const position = await new Position({
+    let position = await Position.findOne({
+      name: request.body.name,
+      user: request.user.id,
+      category: request.body.category,
+    });
+    if (position) {
+      response.status(409).json({
+        message: 'Position with this name is already exists'
+      });
+    }
+
+    position = await new Position({
       name: request.body.name,
       cost: request.body.cost,
       category: request.body.category,

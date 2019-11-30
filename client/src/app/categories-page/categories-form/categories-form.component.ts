@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { CategoriesService } from '../../shared/services/categories.service';
 import { MaterialService } from '../../shared/classes/material.service';
-import { Category } from '../../shared/interfaces';
+import { Category, Message } from '../../shared/interfaces';
 
 
 @Component({
@@ -24,7 +24,8 @@ export class CategoriesFormComponent implements OnInit {
   category: Category;
 
   constructor(private route: ActivatedRoute,
-              private categoriesService: CategoriesService) { }
+              private categoriesService: CategoriesService,
+              private router: Router) { }
 
   ngOnInit() {
 
@@ -40,7 +41,7 @@ export class CategoriesFormComponent implements OnInit {
             if (params['id']) {
               // We edit form
               this.isNew = false;
-              return this.categoriesService.getById(params['id'])
+              return this.categoriesService.getById(params['id']);
             }
             return of(null);
           }
@@ -55,22 +56,14 @@ export class CategoriesFormComponent implements OnInit {
             MaterialService.updateTextFields();
             this.imagePreview = category.imageSrc;
             this.category = category;
-          }
 
+          } else {
+            this.isNew = true;
+          }
           this.form.enable();
         },
         error => MaterialService.toast(error.error.message)
       );
-
-    /*this.route.params.subscribe((params: Params) => {
-      if (params['id']) {
-        // We edit form
-        this.isNew = false;
-        this.categories.getById(params['id'])
-      } else {
-        // Add new
-      }
-    });*/
   }
 
   triggerClick() {
@@ -96,6 +89,7 @@ export class CategoriesFormComponent implements OnInit {
     if (this.isNew) {
       // Create
       obs$ = this.categoriesService.create(this.form.value.name, this.image);
+      this.isNew = false;
     } else {
       // Update
       obs$ = this.categoriesService.update(this.category._id, this.form.value.name, this.image);
@@ -116,6 +110,26 @@ export class CategoriesFormComponent implements OnInit {
         MaterialService.toast(error.error.message)
       }
     )
+  }
+
+  deleteCategory() {
+    const desition = confirm(`Вы уверены, что хотите удалить категорию "${this.category.name}"`);
+    this.form.disable();
+    if (desition) {
+      this.categoriesService.delete(this.category._id)
+        .subscribe(
+          (message: Message) => {
+            MaterialService.toast(message.message);
+          },
+          error => {
+            this.form.enable();
+            MaterialService.toast(error.error.message);
+          },
+          () => {
+            this.router.navigate(['/categories']);
+          }
+        );
+    }
   }
 
 }
