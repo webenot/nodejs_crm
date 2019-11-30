@@ -38,13 +38,13 @@
         <tr *ngFor="let item of order.list">
           <td>{{item.name}}</td>
           <td>{{item.quantity}}</td>
-          <td>{{item.cost}} грн.</td>
+          <td>{{item.cost.toFixed(2)}} грн.</td>
           <td><i class="material-icons pointer" (click)="removePosition(item)">delete</i></td>
         </tr>
         </tbody>
       </table>
       <div class="order-summary">
-        <p>Общая стоимость <strong>{{order.price}} грн.</strong></p>
+        <p>Общая стоимость <strong>{{order.price.toFixed(2)}} грн.</strong></p>
       </div>
     </div>
     <div class="modal-footer">

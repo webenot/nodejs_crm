@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { Order } from '../interfaces';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,12 @@ export class OrdersService {
 
   constructor(private http: HttpClient) {}
 
-  fetch(): Observable<Order[]> {
-    return this.http.get<Order[]>('/api/order');
+  fetch(params: any): Observable<Order[]> {
+    return this.http.get<Order[]>('/api/order', {
+      params: new HttpParams({
+        fromObject: params,
+      })
+    });
   }
 
   create(order: Order): Observable<Order> {

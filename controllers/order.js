@@ -6,25 +6,33 @@ const errorHandler = require('../utils/errorHandler');
 // GET http://localhost:5000/api/order?page=2&limit=5
 module.exports.getAll = async (request, response) => {
   try {
-    let page = request.query.page ? parseInt(request.query.page) : 1;
-    page = isNaN(page) ? 1 : page;
+    let page = request.query.page ? +request.query.page : 1;
+    let limit = request.query.limit ? +request.query.limit : 10;
+
     let offset = (page - 1) * limit;
 
     const query = {
       user: request.user.id,
     };
 
-    if (request.query.start) {
+    if (request.query.start && request.query.end && request.query.start === request.query.end) {
       query.date = {
-        $gte: request.query.start
+        $gte: request.query.start,
+        $lte: new Date (+new Date(request.query.start) + 24 * 60 * 60 * 999)
       }
-    }
+    } else {
+      if (request.query.start) {
+        query.date = {
+          $gte: request.query.start
+        }
+      }
 
-    if (request.query.end) {
-      if (!query.date) {
-        query.date = {};
+      if (request.query.end) {
+        if (!query.date) {
+          query.date = {};
+        }
+        query.date['$lte'] = request.query.end;
       }
-      query.date['$lte'] = request.query.end;
     }
 
     if (request.query.order) {
@@ -36,9 +44,14 @@ module.exports.getAll = async (request, response) => {
         date: -1,
       })
       .skip(offset)
-      .limit(+request.query.limit);
+      .limit(limit);
 
     response.status(200).json(orders);
+    /*response.status(200).json({
+      orders,
+      query,
+      typeofDate: typeof query.date
+    });*/
   } catch (error) {
     errorHandler(response, error);
   }
