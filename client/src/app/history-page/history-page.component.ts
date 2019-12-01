@@ -34,7 +34,7 @@ export class HistoryPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   filter = {};
 
-  private ordersList: Order[] = [];
+  ordersList: Order[] = [];
 
   constructor(private orderService: OrdersService) { }
 

@@ -12,6 +12,7 @@ const orderRoutes = require('./routes/order');
 const categoryRoutes = require('./routes/category');
 const positionRoutes = require('./routes/position');
 const app = express();
+const path = require('path');
 
 require('dotenv').config();
 
@@ -47,10 +48,16 @@ app.use('/api/order', orderRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/position', positionRoutes);
 
-app.get('/', (request, response) => {
-  response.status(200).json({
-    message: 'Worked!',
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/dist/client'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(
+      path.resolve(
+        __dirname, 'client', 'dist', 'client', 'index.html'
+      )
+    )
   });
-});
+}
 
 module.exports = app;
