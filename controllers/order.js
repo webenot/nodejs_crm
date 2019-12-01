@@ -15,24 +15,17 @@ module.exports.getAll = async (request, response) => {
       user: request.user.id,
     };
 
-    if (request.query.start && request.query.end && request.query.start === request.query.end) {
+    if (request.query.start) {
       query.date = {
         $gte: request.query.start,
-        $lte: new Date (+new Date(request.query.start) + 24 * 60 * 60 * 999)
       }
-    } else {
-      if (request.query.start) {
-        query.date = {
-          $gte: request.query.start
-        }
-      }
+    }
 
-      if (request.query.end) {
-        if (!query.date) {
-          query.date = {};
-        }
-        query.date['$lte'] = request.query.end;
+    if (request.query.end) {
+      if (!query.date) {
+        query.date = {};
       }
+      query.date['$lte'] = new Date (+new Date(request.query.end) + 24 * 60 * 60 * 999);
     }
 
     if (request.query.order) {
@@ -47,11 +40,7 @@ module.exports.getAll = async (request, response) => {
       .limit(limit);
 
     response.status(200).json(orders);
-    /*response.status(200).json({
-      orders,
-      query,
-      typeofDate: typeof query.date
-    });*/
+
   } catch (error) {
     errorHandler(response, error);
   }
