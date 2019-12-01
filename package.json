@@ -14,7 +14,7 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start-tmp": "node index",
-    "heroku-postbuild": "npm run client-install && npm run build-prod --prefix client && node index"
+    "heroku-postbuild": "npm run client-install && npm run build-prod --prefix client"
   },
   "repository": {
     "type": "git",
