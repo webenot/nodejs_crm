@@ -3,10 +3,6 @@
   "version": "1.0.1",
   "description": "CRM",
   "main": "index.js",
-  "engines" : {
-    "node": "12.11.0",
-    "npm": "6.13.1"
-  },
   "scripts": {
     "start": "npm run client-install && npm run build-prod --prefix client && node index",
     "server": "nodemon index",
