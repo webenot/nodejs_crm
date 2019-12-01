@@ -8,7 +8,7 @@
     "npm": "6.13.1"
   },
   "scripts": {
-    "start": "npm run client-install && npm run build-prod --prefix client && node index",
+    "start": "node index",
     "server": "nodemon index",
     "client-install": "npm install --prefix client",
     "client": "npm run start --prefix client",
