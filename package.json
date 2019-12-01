@@ -9,7 +9,8 @@
     "client-install": "npm install --prefix client",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start-tmp": "node index"
+    "start-tmp": "node index",
+    "heroku-postbuild": "npm run client-install && npm run build-prod --prefix client && node index"
   },
   "repository": {
     "type": "git",
