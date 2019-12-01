@@ -5,10 +5,26 @@ const moment = require('moment');
 const Order = require('../models/Order');
 const errorHandler = require('../utils/errorHandler');
 
-module.exports.analytics = (request, response) => {
-  response.status(200).json({
-    analytics: 'From Controller'
-  });
+module.exports.analytics = async (request, response) => {
+  try {
+    const allOrders = await Order.find({
+      user: request.user._id
+    }).sort({ date: 1 });
+
+    const ordersMap = getOrdersMap(allOrders);
+
+    const average = +(calculatePrice(allOrders) / Object.keys(ordersMap).length).toFixed(2);
+
+    const chart = Object.keys(ordersMap).map(label => {
+      const gain = calculatePrice(ordersMap[label]);
+      const order = ordersMap[label].length;
+      return { label, gain, order };
+    });
+
+    response.status(200).json({ average, chart });
+  } catch (error) {
+    errorHandler(response, error);
+  }
 };
 
 module.exports.overview = async (request, response) => {
@@ -37,7 +53,7 @@ module.exports.overview = async (request, response) => {
 
     // Orders count percent
     // ((ordersBefore / ordersPerDay) - 1) * 100
-    const ordersCountPercent = (((yesterdayOrdersCount / ordersPerDay) - 1) / 100).toFixed(2);
+    const ordersCountPercent = ((yesterdayOrdersCount / ordersPerDay - 1) * 100).toFixed(2);
 
     // Total gain
     const totalGain = calculatePrice(allOrders).toFixed(2);
@@ -49,7 +65,7 @@ module.exports.overview = async (request, response) => {
     const yesterdayGain = calculatePrice(yesterdayOrders);
 
     // Gain percents
-    const gainPercent = (((yesterdayGain / gainPerDay) - 1) / 100).toFixed(2);
+    const gainPercent = ((yesterdayGain / gainPerDay - 1) * 100).toFixed(2);
 
     // Gain comparison
     const gainComparison = (yesterdayGain - gainPerDay).toFixed(2);

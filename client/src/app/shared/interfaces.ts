@@ -55,3 +55,14 @@ export interface OverviewPage {
   gain: OverviewPageItem,
   orders: OverviewPageItem,
 }
+
+export interface AnalyticsChartItem {
+  label: string,
+  gain: number,
+  order: number
+}
+
+export interface AnalyticsPage {
+  average: number,
+  chart: AnalyticsChartItem[]
+}

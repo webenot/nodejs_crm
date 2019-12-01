@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { OverviewPage } from '../interfaces';
+import { AnalyticsPage, OverviewPage } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class AnalyticsService {
     return this.http.get<OverviewPage>('/api/report/overview');
   }
 
-  getAnalytics() {
-
+  getAnalytics(): Observable<AnalyticsPage> {
+    return this.http.get<AnalyticsPage>('/api/report/analytics');
   }
 }
