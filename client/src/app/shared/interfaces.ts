@@ -35,11 +35,23 @@ export interface OrderPosition {
   name: string,
   cost: number,
   quantity: number,
-  _id?: string
+  _id?: string,
 }
 
 export interface Filter {
   start?: Date,
   end?: Date,
-  order?: number
+  order?: number,
+}
+
+export interface OverviewPageItem {
+  percent: number,
+  compare: number,
+  yesterday: number,
+  isHigher: boolean,
+}
+
+export interface OverviewPage {
+  gain: OverviewPageItem,
+  orders: OverviewPageItem,
 }

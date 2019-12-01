@@ -11,10 +11,11 @@ const analyticsRoutes = require('./routes/analytics');
 const orderRoutes = require('./routes/order');
 const categoryRoutes = require('./routes/category');
 const positionRoutes = require('./routes/position');
-const keys = require('./config/keys');
 const app = express();
 
-mongoose.connect(keys.mongoLocal,
+require('dotenv').config();
+
+mongoose.connect(process.env.DB_LINK,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -41,7 +42,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use('/api/auth', authRoutes);
-app.use('/api/analytics', analyticsRoutes);
+app.use('/api/report', analyticsRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/position', positionRoutes);

@@ -3,8 +3,9 @@
 const bcryptjs = require('bcryptjs');
 const jsonwebtoken = require('jsonwebtoken');
 const User = require('../models/User');
-const keys = require('../config/keys');
 const errorHandler = require('../utils/errorHandler');
+
+require('dotenv').config();
 
 module.exports.login = async (request, response) => {
   // email password
@@ -22,7 +23,7 @@ module.exports.login = async (request, response) => {
           email: candidate.email,
           userId: candidate._id,
         },
-        keys.secret,
+        process.env.BCRYPT_SECRET,
         {
           expiresIn: 60 * 60
         });

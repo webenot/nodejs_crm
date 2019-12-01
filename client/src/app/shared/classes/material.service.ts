@@ -39,4 +39,8 @@ export class MaterialService {
   static datepicker(ref: ElementRef, options = null): MaterialDatepicker {
     return M.Datepicker.init(ref.nativeElement, options);
   }
+
+  static initTap(ref: ElementRef, options = null): MaterialInstance {
+    return M.TapTarget.init(ref.nativeElement, options);
+  }
 }
